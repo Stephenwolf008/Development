@@ -1,2 +1,0 @@
-user="addyourown"
-pas="addyourown"
