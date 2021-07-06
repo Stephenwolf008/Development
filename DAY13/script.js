@@ -1,44 +1,22 @@
-async function dataAA(){
-    const data = await fetch("https://api.github.com/users/abhaygupta08")
-    res = await data.json();
-    console.log(res);
+const ul = document.getElementById('People'),
+      url = 'https://randomuser.me/api/?gender=male&results=10';
 
-}
-//dataAA()
-async function getSheet(){
-    let data = await fetch("https://sheet.best/api/sheets/e0955054-83b8-4f7d-a6ec-c919d09f7638");
-    data = await data.json();
-    console.log(data);
-}
-// getSheet()
-var toPostData = { "name": "John", "email": "fmkfkdf", "message": "", "infoSource": "ddddd" }
+const createNode = (element) => { return document.createElement(element); }
+const append = (parent, el) => { return parent.appendChild(el); }
 
-// console.log(data.infoSource);
-async function putData(data){
-    const config = {
-        method : 'POST',
-        headers : {
-            Accept: 'application/json',
-            'Content-Type':'application/json',
-        },
-        body:JSON.stringify(data)
-    }
-    let resp = await fetch('https://sheet.best/api/sheets/e0955054-83b8-4f7d-a6ec-c919d09f7638',config);
-    data = await resp.json()
-    document.querySelector("#contactForm").remove()
-    document.querySelector(".displayData").classList.toggle("hide")    
-
-}
-
-document.querySelector("#contactForm").onsubmit = (e) => {
-    e.preventDefault();
- 
-    const formData = new FormData(e.target);
-    const data = Array.from(formData.entries()).reduce((memo, pair) => ({
-        ...memo,
-        [pair[0]]: pair[1],
-    }), {});
-
-    putData(data);
-}
-
+fetch(url)
+  .then((response) => { return response.json(); })
+  .then( data => {
+    let People = data.results; 
+    return People.map( People => { 
+      let li = createNode('li'), 
+          img = createNode('img'),
+          span = createNode('span');
+      img.src = People.picture.medium;  
+      span.innerHTML = `${People.name.first} ${People.name.last}`; 
+      append(li, img); 
+      append(li, span);
+      append(ul, li);
+    });
+  })
+  .catch( error => { console.log(error); })
